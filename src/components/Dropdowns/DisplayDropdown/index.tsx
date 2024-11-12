@@ -3,23 +3,27 @@ import './displayDropdown.css'
 import { LuSettings2 } from "react-icons/lu";
 import { BiChevronDown } from "react-icons/bi";
 
-
 function DisplayDropdown({ grouping, setGrouping, ordering, setOrdering }: { grouping: string, setGrouping: (grouping: string) => void, ordering: string, setOrdering: (ordering: string) => void }) {
   const [visible, setVisible] = useState(false);
   const componentRef = useRef<HTMLDivElement | null>(null);
 
   const openDropdown = useCallback(() => {
     setVisible(true);
-  }, [],);
+  }, []);
 
   const handleClickOutside = useCallback((event: any) => {
     if (componentRef.current && !componentRef.current.contains(event.target)) {
       setVisible(false);
     }
-  }, []);
+  }, [componentRef]);
 
-  const onGroupingChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => setGrouping(e.target.value), []);
-  const onOrderingChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => setOrdering(e.target.value), []);
+  const onGroupingChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    setGrouping(e.target.value);
+  }, [setGrouping]);
+
+  const onOrderingChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    setOrdering(e.target.value);
+  }, [setOrdering]);
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
@@ -27,7 +31,7 @@ function DisplayDropdown({ grouping, setGrouping, ordering, setOrdering }: { gro
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  });
+  }, [handleClickOutside]);
 
   return (
     <div className='display-dropdown' ref={componentRef}>
