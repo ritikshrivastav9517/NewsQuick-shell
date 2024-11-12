@@ -7,7 +7,6 @@ import { Ticket, User } from '../../interfaces';
 import { getPriorityIcon, getStatusIcon } from '../../utils/helper';
 import UserIcon from '../UserIcon';
 
-
 function Column({ tickets, grouping, groupBy, userIdToData }: { tickets: Ticket[], grouping: string, groupBy: string, userIdToData: Record<string, User> }) {
 
     const title = useMemo(() => {
@@ -17,7 +16,7 @@ function Column({ tickets, grouping, groupBy, userIdToData }: { tickets: Ticket[
             return groupBy;
         if (grouping === "user")
             return userIdToData[groupBy].name;
-    }, [grouping, groupBy]);
+    }, [grouping, groupBy, userIdToData]);
 
     const icon = useMemo(() => {
         if (grouping === "status")
@@ -26,8 +25,7 @@ function Column({ tickets, grouping, groupBy, userIdToData }: { tickets: Ticket[
             return getPriorityIcon(groupBy);
         if (grouping === "user")
             return <UserIcon name={userIdToData[groupBy].name} available={userIdToData[groupBy].available} />
-    }, [grouping, groupBy])
-
+    }, [grouping, groupBy, userIdToData]);
 
     return (
         <div className='column'>
